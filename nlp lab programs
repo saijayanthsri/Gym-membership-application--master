@@ -1,0 +1,867 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM6O5i2t5H1qf0NX4XYvuwJ",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/mancharla/Gym-membership-application-/blob/master/nlp%20lab%20programs\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "GEspqWgeow2I",
+        "outputId": "475a8483-0161-4b0c-9932-df911ed8d00b"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Tokens: ['Natural', 'Language', 'Processing', 'is', 'a', 'fascinating', 'field', 'of', 'study', '.']\n",
+            "Lemmas: ['Natural', 'Language', 'Processing', 'be', 'a', 'fascinating', 'field', 'of', 'study', '.']\n",
+            "\n",
+            "Dependency Parsing:\n",
+            "Natural compound Language PROPN []\n",
+            "Language compound Processing PROPN [Natural]\n",
+            "Processing nsubj is AUX [Language]\n",
+            "is ROOT is AUX [Processing, field, .]\n",
+            "a det field NOUN []\n",
+            "fascinating amod field NOUN []\n",
+            "field attr is AUX [a, fascinating, of]\n",
+            "of prep field NOUN [study]\n",
+            "study pobj of ADP []\n",
+            ". punct is AUX []\n"
+          ]
+        }
+      ],
+      "source": [
+        "import spacy\n",
+        "# Load English tokenizer, tagger, parser, NER, and word vectors\n",
+        "nlp = spacy.load(\"en_core_web_sm\")\n",
+        "# Sample text for analysis\n",
+        "text = \"Natural Language Processing is a fascinating field of study.\"\n",
+        "# Process the text with spaCy\n",
+        "doc = nlp(text)\n",
+        "# Extracting tokens and lemmatization\n",
+        "tokens = [token.text for token in doc]\n",
+        "lemmas = [token.lemma_ for token in doc]\n",
+        "print(\"Tokens:\", tokens)\n",
+        "print(\"Lemmas:\", lemmas)\n",
+        "# Dependency parsing\n",
+        "print(\"\\nDependency Parsing:\")\n",
+        "for token in doc:\n",
+        " print(token.text, token.dep_, token.head.text, token.head.pos_,\n",
+        " [child for child in token.children])\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import spacy\n",
+        "# Load English tokenizer, tagger, parser, NER, and word vectors\n",
+        "nlp = spacy.load(\"en_core_web_sm\")\n",
+        "# Sample customer feedback data\n",
+        "customer_feedback = [\n",
+        " \"The product is amazing! I love the quality.\",\n",
+        " \"The customer service was terrible, very disappointed.\",\n",
+        " \"Great experience overall, highly recommended.\",\n",
+        " \"The delivery was late, very frustrating.\"\n",
+        "]\n",
+        "def analyze_feedback(feedback):\n",
+        " for idx, text in enumerate(feedback, start=1):\n",
+        "  print(f\"\\nAnalyzing Feedback {idx}: '{text}'\")\n",
+        " doc = nlp(text)\n",
+        " # Extract tokens and lemmatization\n",
+        " tokens = [token.text for token in doc]\n",
+        " lemmas = [token.lemma_ for token in doc]\n",
+        " print(\"Tokens:\", tokens)\n",
+        " print(\"Lemmas:\", lemmas)\n",
+        " # Dependency parsing\n",
+        " print(\"\\nDependency Parsing:\")\n",
+        " for token in doc:\n",
+        "  print(token.text, token.dep_, token.head.text, token.head.pos_,\n",
+        " [child for child in token.children])\n",
+        "if __name__ == \"__main__\":\n",
+        " analyze_feedback(customer_feedback)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "jpys6xono-s3",
+        "outputId": "f91d3963-09fa-4cdb-fe72-a45434784593"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Analyzing Feedback 1: 'The product is amazing! I love the quality.'\n",
+            "\n",
+            "Analyzing Feedback 2: 'The customer service was terrible, very disappointed.'\n",
+            "\n",
+            "Analyzing Feedback 3: 'Great experience overall, highly recommended.'\n",
+            "\n",
+            "Analyzing Feedback 4: 'The delivery was late, very frustrating.'\n",
+            "Tokens: ['The', 'delivery', 'was', 'late', ',', 'very', 'frustrating', '.']\n",
+            "Lemmas: ['the', 'delivery', 'be', 'late', ',', 'very', 'frustrating', '.']\n",
+            "\n",
+            "Dependency Parsing:\n",
+            "The det delivery NOUN []\n",
+            "delivery nsubj was AUX [The]\n",
+            "was ROOT was AUX [delivery, frustrating, .]\n",
+            "late advmod frustrating ADJ []\n",
+            ", punct frustrating ADJ []\n",
+            "very advmod frustrating ADJ []\n",
+            "frustrating acomp was AUX [late, ,, very]\n",
+            ". punct was AUX []\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install nltk\n",
+        "import nltk\n",
+        "import random\n",
+        "# Download NLTK resources (run only once if not downloaded)\n",
+        "nltk.download('punkt')\n",
+        "nltk.download('gutenberg')\n",
+        "# Load a corpus (for example, the Gutenberg corpus)\n",
+        "words = nltk.corpus.gutenberg.words()\n",
+        "# Create a bigram model\n",
+        "bigrams = list(nltk.bigrams(words))\n",
+        "# Choose a starting word (you can choose any word from the corpus)\n",
+        "starting_word = \"the\"\n",
+        "generated_text = [starting_word]\n",
+        "# Generate 20 words of text\n",
+        "for _ in range(20):\n",
+        " # Get all bigrams that start with the last generated word\n",
+        " possible_words = [word2 for (word1, word2) in bigrams if word1.lower() ==\n",
+        "generated_text[-1].lower()]\n",
+        "\n",
+        " # Choose a word randomly from the possible options\n",
+        " next_word = random.choice(possible_words)\n",
+        " generated_text.append(next_word)\n",
+        "# Print the generated text\n",
+        "print(' '.join(generated_text))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "5-388V4CpOU_",
+        "outputId": "eb8c3fd9-0051-410f-edd7-b6122b939484"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: nltk in /usr/local/lib/python3.10/dist-packages (3.8.1)\n",
+            "Requirement already satisfied: click in /usr/local/lib/python3.10/dist-packages (from nltk) (8.1.7)\n",
+            "Requirement already satisfied: joblib in /usr/local/lib/python3.10/dist-packages (from nltk) (1.3.2)\n",
+            "Requirement already satisfied: regex>=2021.8.3 in /usr/local/lib/python3.10/dist-packages (from nltk) (2023.12.25)\n",
+            "Requirement already satisfied: tqdm in /usr/local/lib/python3.10/dist-packages (from nltk) (4.66.2)\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package punkt to /root/nltk_data...\n",
+            "[nltk_data]   Unzipping tokenizers/punkt.zip.\n",
+            "[nltk_data] Downloading package gutenberg to /root/nltk_data...\n",
+            "[nltk_data]   Unzipping corpora/gutenberg.zip.\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "the guilty . 16 When and ten thousand chariots , and all affection too like a disappointment , and Louers in\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install transformers\n",
+        "import torch\n",
+        "from transformers import GPT2LMHeadModel, GPT2Tokenizer\n",
+        "class EmailAutocompleteSystem:\n",
+        " def __init__(self):\n",
+        "  self.model_name = \"gpt2\"\n",
+        " self.tokenizer = GPT2Tokenizer.from_pretrained(self.model_name)\n",
+        " self.model = GPT2LMHeadModel.from_pretrained(self.model_name)\n",
+        " def generate_suggestions(self, user_input, context):\n",
+        "  input_text = f\"{context} {user_input}\"\n",
+        " input_ids = self.tokenizer.encode(input_text, return_tensors=\"pt\")\n",
+        " with torch.no_grad():\n",
+        "  output = self.model.generate(input_ids, max_length=50, num_return_sequences=1,\n",
+        "no_repeat_ngram_size=2)\n",
+        " generated_text = self.tokenizer.decode(output[0], skip_special_tokens=True)\n",
+        " suggestions = generated_text.split()[len(user_input.split()):]\n",
+        " return suggestions\n",
+        "# Example usage\n",
+        "if __name__ == \"__main__\":\n",
+        " autocomplete_system = EmailAutocompleteSystem()\n",
+        " # Assume user is composing an email with some context\n",
+        " email_context = \"Subject: Discussing Project Proposal\\nHi [Recipient],\"\n",
+        "\n",
+        " while True:\n",
+        "  user_input = input(\"Enter your sentence (type 'exit' to end): \")\n",
+        "\n",
+        " if user_input.lower() == 'exit':\n",
+        "  break\n",
+        " suggestions = autocomplete_system.generate_suggestions(user_input, email_context)\n",
+        "\n",
+        " if suggestions:\n",
+        "  print(\"Autocomplete Suggestions:\", suggestions)\n",
+        " else:\n",
+        "  print(\"No suggestions available.\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 422
+        },
+        "id": "AtOg2zvJpZql",
+        "outputId": "f11b49e2-b5ee-47c5-8428-b8c26cfdbca8"
+      },
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: transformers in /usr/local/lib/python3.10/dist-packages (4.38.2)\n",
+            "Requirement already satisfied: filelock in /usr/local/lib/python3.10/dist-packages (from transformers) (3.13.1)\n",
+            "Requirement already satisfied: huggingface-hub<1.0,>=0.19.3 in /usr/local/lib/python3.10/dist-packages (from transformers) (0.20.3)\n",
+            "Requirement already satisfied: numpy>=1.17 in /usr/local/lib/python3.10/dist-packages (from transformers) (1.25.2)\n",
+            "Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.10/dist-packages (from transformers) (24.0)\n",
+            "Requirement already satisfied: pyyaml>=5.1 in /usr/local/lib/python3.10/dist-packages (from transformers) (6.0.1)\n",
+            "Requirement already satisfied: regex!=2019.12.17 in /usr/local/lib/python3.10/dist-packages (from transformers) (2023.12.25)\n",
+            "Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from transformers) (2.31.0)\n",
+            "Requirement already satisfied: tokenizers<0.19,>=0.14 in /usr/local/lib/python3.10/dist-packages (from transformers) (0.15.2)\n",
+            "Requirement already satisfied: safetensors>=0.4.1 in /usr/local/lib/python3.10/dist-packages (from transformers) (0.4.2)\n",
+            "Requirement already satisfied: tqdm>=4.27 in /usr/local/lib/python3.10/dist-packages (from transformers) (4.66.2)\n",
+            "Requirement already satisfied: fsspec>=2023.5.0 in /usr/local/lib/python3.10/dist-packages (from huggingface-hub<1.0,>=0.19.3->transformers) (2023.6.0)\n",
+            "Requirement already satisfied: typing-extensions>=3.7.4.3 in /usr/local/lib/python3.10/dist-packages (from huggingface-hub<1.0,>=0.19.3->transformers) (4.10.0)\n",
+            "Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.10/dist-packages (from requests->transformers) (3.3.2)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/dist-packages (from requests->transformers) (3.6)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests->transformers) (2.0.7)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests->transformers) (2024.2.2)\n"
+          ]
+        },
+        {
+          "output_type": "error",
+          "ename": "SyntaxError",
+          "evalue": "'return' outside function (<ipython-input-2-f069426072ab>, line 17)",
+          "traceback": [
+            "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-2-f069426072ab>\"\u001b[0;36m, line \u001b[0;32m17\u001b[0m\n\u001b[0;31m    return suggestions\u001b[0m\n\u001b[0m    ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m 'return' outside function\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install scikit-learn if not already installed\n",
+        "!pip install scikit-learn\n",
+        "# Import necessary libraries\n",
+        "import pandas as pd\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "from sklearn.svm import SVC\n",
+        "from sklearn.metrics import accuracy_score, classification_report\n",
+        "# Sample dataset (you can replace this with your dataset)\n",
+        "data = {\n",
+        " 'text': [\n",
+        " 'This is a positive sentence',\n",
+        " 'I am happy today',\n",
+        " 'Negative review, very bad service',\n",
+        " 'I do not like this product'\n",
+        " ],\n",
+        " 'label': ['positive', 'positive', 'negative', 'negative']\n",
+        "}\n",
+        "# Convert data to DataFrame\n",
+        "df = pd.DataFrame(data)\n",
+        "# Split data into train and test sets\n",
+        "X_train, X_test, y_train, y_test = train_test_split(df['text'], df['label'], test_size=0.2,\n",
+        "random_state=42)\n",
+        "# Initialize TF-IDF vectorizer\n",
+        "tfidf_vectorizer = TfidfVectorizer()\n",
+        "# Fit and transform the training data\n",
+        "X_train_tfidf = tfidf_vectorizer.fit_transform(X_train)\n",
+        "# Initialize SVM classifier\n",
+        "svm_classifier = SVC(kernel='linear')\n",
+        "# Train the classifier\n",
+        "svm_classifier.fit(X_train_tfidf, y_train)\n",
+        "# Transform the test data\n",
+        "X_test_tfidf = tfidf_vectorizer.transform(X_test)\n",
+        "# Predict on the test data\n",
+        "y_pred = svm_classifier.predict(X_test_tfidf)\n",
+        "# Calculate accuracy\n",
+        "accuracy = accuracy_score(y_test, y_pred)\n",
+        "print(f'Accuracy: {accuracy:.2f}')\n",
+        "# Display classification report\n",
+        "print(classification_report(y_test, y_pred))\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "jp6kpdljp_En",
+        "outputId": "55d5f42e-4418-4a3a-a2a9-4b387fd341dc"
+      },
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: scikit-learn in /usr/local/lib/python3.10/dist-packages (1.2.2)\n",
+            "Requirement already satisfied: numpy>=1.17.3 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.25.2)\n",
+            "Requirement already satisfied: scipy>=1.3.2 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.11.4)\n",
+            "Requirement already satisfied: joblib>=1.1.1 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.3.2)\n",
+            "Requirement already satisfied: threadpoolctl>=2.0.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (3.3.0)\n",
+            "Accuracy: 0.00\n",
+            "              precision    recall  f1-score   support\n",
+            "\n",
+            "    negative       0.00      0.00      0.00       0.0\n",
+            "    positive       0.00      0.00      0.00       1.0\n",
+            "\n",
+            "    accuracy                           0.00       1.0\n",
+            "   macro avg       0.00      0.00      0.00       1.0\n",
+            "weighted avg       0.00      0.00      0.00       1.0\n",
+            "\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.10/dist-packages/sklearn/metrics/_classification.py:1344: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, msg_start, len(result))\n",
+            "/usr/local/lib/python3.10/dist-packages/sklearn/metrics/_classification.py:1344: UndefinedMetricWarning: Recall and F-score are ill-defined and being set to 0.0 in labels with no true samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, msg_start, len(result))\n",
+            "/usr/local/lib/python3.10/dist-packages/sklearn/metrics/_classification.py:1344: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, msg_start, len(result))\n",
+            "/usr/local/lib/python3.10/dist-packages/sklearn/metrics/_classification.py:1344: UndefinedMetricWarning: Recall and F-score are ill-defined and being set to 0.0 in labels with no true samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, msg_start, len(result))\n",
+            "/usr/local/lib/python3.10/dist-packages/sklearn/metrics/_classification.py:1344: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, msg_start, len(result))\n",
+            "/usr/local/lib/python3.10/dist-packages/sklearn/metrics/_classification.py:1344: UndefinedMetricWarning: Recall and F-score are ill-defined and being set to 0.0 in labels with no true samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, msg_start, len(result))\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Import necessary libraries\n",
+        "from sklearn.datasets import fetch_20newsgroups\n",
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.svm import LinearSVC\n",
+        "from sklearn.metrics import accuracy_score, classification_report\n",
+        "# Load the 20 Newsgroups dataset as a proxy for customer support emails\n",
+        "newsgroups = fetch_20newsgroups(subset='all', categories=['comp.sys.ibm.pc.hardware',\n",
+        "'comp.sys.mac.hardware', 'rec.autos', 'rec.motorcycles', 'sci.electronics'])\n",
+        "# Prepare data and target labels\n",
+        "X = newsgroups.data\n",
+        "y = newsgroups.target\n",
+        "# Split the data into training and testing sets\n",
+        "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n",
+        "# Create TF-IDF vectorizer\n",
+        "vectorizer = TfidfVectorizer(stop_words='english', max_features=10000)\n",
+        "X_train = vectorizer.fit_transform(X_train)\n",
+        "X_test = vectorizer.transform(X_test)\n",
+        "# Train the LinearSVC classifier\n",
+        "classifier = LinearSVC()\n",
+        "classifier.fit(X_train, y_train)\n",
+        "# Predict labels for the test set\n",
+        "predictions = classifier.predict(X_test)\n",
+        "# Evaluate the classifier\n",
+        "accuracy = accuracy_score(y_test, predictions)\n",
+        "print(\"Accuracy:\", accuracy)\n",
+        "print(\"\\nClassification Report:\")\n",
+        "print(classification_report(y_test, predictions, target_names=newsgroups.target_names))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7Xqsoq12qK6h",
+        "outputId": "6c795668-7913-406d-bc16-a0fde86958f4"
+      },
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Accuracy: 0.9389623601220752\n",
+            "\n",
+            "Classification Report:\n",
+            "                          precision    recall  f1-score   support\n",
+            "\n",
+            "comp.sys.ibm.pc.hardware       0.92      0.91      0.91       212\n",
+            "   comp.sys.mac.hardware       0.94      0.93      0.94       198\n",
+            "               rec.autos       0.97      0.93      0.95       179\n",
+            "         rec.motorcycles       0.96      0.99      0.97       205\n",
+            "         sci.electronics       0.92      0.93      0.92       189\n",
+            "\n",
+            "                accuracy                           0.94       983\n",
+            "               macro avg       0.94      0.94      0.94       983\n",
+            "            weighted avg       0.94      0.94      0.94       983\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install necessary libraries\n",
+        "!pip install gensim\n",
+        "!pip install nltk\n",
+        "# Import required libraries\n",
+        "import gensim.downloader as api\n",
+        "from nltk.tokenize import word_tokenize\n",
+        "# Download pre-trained word vectors (Word2Vec)\n",
+        "word_vectors = api.load(\"word2vec-google-news-300\")\n",
+        "# Sample sentences\n",
+        "sentences = [\n",
+        "\"Natural language processing is a challenging but fascinating field.\",\n",
+        "\"Word embeddings capture semantic meanings of words in a vector space.\"\n",
+        "]\n",
+        "# Tokenize sentences\n",
+        "tokenized_sentences = [word_tokenize(sentence.lower()) for sentence in sentences]\n",
+        "# Perform semantic analysis using pre-trained word vectors\n",
+        "for tokenized_sentence in tokenized_sentences:\n",
+        "  for word in tokenized_sentence:\n",
+        "    if word in word_vectors:\n",
+        "      similar_words = word_vectors.most_similar(word)\n",
+        "      print(f\"Words similar to '{word}': {similar_words}\")\n",
+        "    else:\n",
+        "      print(f\"'{word}' is not in the pre-trained Word2Vec model.\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "_K0Rj7rkqg3V",
+        "outputId": "49c7799c-7477-465b-9a62-d3c8cabad7ef"
+      },
+      "execution_count": 19,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: gensim in /usr/local/lib/python3.10/dist-packages (4.3.2)\n",
+            "Requirement already satisfied: numpy>=1.18.5 in /usr/local/lib/python3.10/dist-packages (from gensim) (1.25.2)\n",
+            "Requirement already satisfied: scipy>=1.7.0 in /usr/local/lib/python3.10/dist-packages (from gensim) (1.11.4)\n",
+            "Requirement already satisfied: smart-open>=1.8.1 in /usr/local/lib/python3.10/dist-packages (from gensim) (6.4.0)\n",
+            "Requirement already satisfied: nltk in /usr/local/lib/python3.10/dist-packages (3.8.1)\n",
+            "Requirement already satisfied: click in /usr/local/lib/python3.10/dist-packages (from nltk) (8.1.7)\n",
+            "Requirement already satisfied: joblib in /usr/local/lib/python3.10/dist-packages (from nltk) (1.3.2)\n",
+            "Requirement already satisfied: regex>=2021.8.3 in /usr/local/lib/python3.10/dist-packages (from nltk) (2023.12.25)\n",
+            "Requirement already satisfied: tqdm in /usr/local/lib/python3.10/dist-packages (from nltk) (4.66.2)\n",
+            "[===================-------------------------------] 39.8% 661.6/1662.8MB downloaded"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install necessary libraries\n",
+        "!pip install scikit-learn\n",
+        "!pip install nltk\n",
+        "# Import required libraries\n",
+        "import pandas as pd\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "from sklearn.svm import SVC\n",
+        "from sklearn.metrics import accuracy_score, classification_report\n",
+        "from nltk.corpus import movie_reviews # Sample dataset from NLTK\n",
+        "# Download NLTK resources (run only once if not downloaded)\n",
+        "import nltk\n",
+        "nltk.download('movie_reviews')\n",
+        "# Load the movie_reviews dataset\n",
+        "documents = [(list(movie_reviews.words(fileid)), category)\n",
+        " for category in movie_reviews.categories()\n",
+        " for fileid in movie_reviews.fileids(category)]\n",
+        "# Convert data to DataFrame\n",
+        "df = pd.DataFrame(documents, columns=['text', 'sentiment'])\n",
+        "# Split data into train and test sets\n",
+        "X_train, X_test, y_train, y_test = train_test_split(df['text'], df['sentiment'], test_size=0.2,\n",
+        "random_state=42)\n",
+        "# Initialize TF-IDF vectorizer\n",
+        "tfidf_vectorizer = TfidfVectorizer()\n",
+        "# Fit and transform the training data\n",
+        "X_train_tfidf = tfidf_vectorizer.fit_transform(X_train.apply(' '.join))\n",
+        "# Initialize SVM classifier\n",
+        "svm_classifier = SVC(kernel='linear')\n",
+        "# Train the classifier\n",
+        "svm_classifier.fit(X_train_tfidf, y_train)\n",
+        "# Transform the test data\n",
+        "X_test_tfidf = tfidf_vectorizer.transform(X_test.apply(' '.join))\n",
+        "# Predict on the test data\n",
+        "y_pred = svm_classifier.predict(X_test_tfidf)\n",
+        "# Calculate accuracy\n",
+        "accuracy = accuracy_score(y_test, y_pred)\n",
+        "print(f'Accuracy: {accuracy:.2f}')\n",
+        "# Display classification report\n",
+        "print(classification_report(y_test, y_pred))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wULiXdBqq983",
+        "outputId": "deaeece2-ad9f-48f9-f079-8f9a99577379"
+      },
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: scikit-learn in /usr/local/lib/python3.10/dist-packages (1.2.2)\n",
+            "Requirement already satisfied: numpy>=1.17.3 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.25.2)\n",
+            "Requirement already satisfied: scipy>=1.3.2 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.11.4)\n",
+            "Requirement already satisfied: joblib>=1.1.1 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.3.2)\n",
+            "Requirement already satisfied: threadpoolctl>=2.0.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (3.3.0)\n",
+            "Requirement already satisfied: nltk in /usr/local/lib/python3.10/dist-packages (3.8.1)\n",
+            "Requirement already satisfied: click in /usr/local/lib/python3.10/dist-packages (from nltk) (8.1.7)\n",
+            "Requirement already satisfied: joblib in /usr/local/lib/python3.10/dist-packages (from nltk) (1.3.2)\n",
+            "Requirement already satisfied: regex>=2021.8.3 in /usr/local/lib/python3.10/dist-packages (from nltk) (2023.12.25)\n",
+            "Requirement already satisfied: tqdm in /usr/local/lib/python3.10/dist-packages (from nltk) (4.66.2)\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package movie_reviews to /root/nltk_data...\n",
+            "[nltk_data]   Package movie_reviews is already up-to-date!\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Accuracy: 0.84\n",
+            "              precision    recall  f1-score   support\n",
+            "\n",
+            "         neg       0.83      0.85      0.84       199\n",
+            "         pos       0.85      0.82      0.84       201\n",
+            "\n",
+            "    accuracy                           0.84       400\n",
+            "   macro avg       0.84      0.84      0.84       400\n",
+            "weighted avg       0.84      0.84      0.84       400\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import nltk\n",
+        "from nltk.sentiment.vader import SentimentIntensityAnalyzer\n",
+        "# Download NLTK resources (only required once)\n",
+        "nltk.download('vader_lexicon')\n",
+        "# Sample reviews\n",
+        "reviews = [\n",
+        "\"This product is amazing! I love it.\",\n",
+        "\"The product was good, but the packaging was damaged.\",\n",
+        "\"Very disappointing experience. Would not recommend.\",\n",
+        "\"Neutral feedback on the product.\",\n",
+        "]\n",
+        "# Initialize Sentiment Intensity Analyzer\n",
+        "sid = SentimentIntensityAnalyzer()\n",
+        "# Analyze sentiment for each review\n",
+        "for review in reviews:\n",
+        "  print(\"Review:\", review)\n",
+        "scores = sid.polarity_scores(review)\n",
+        "print(\"Sentiment:\", end=' ')\n",
+        "if scores['compound'] > 0.05:\n",
+        "  print(\"Positive\")\n",
+        "elif scores['compound'] < -0.05:\n",
+        "  print(\"Negative\")\n",
+        "else:\n",
+        "  print(\"Neutral\")\n",
+        "print()\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "B8qol0wCrReI",
+        "outputId": "ed5fce72-beaf-4f11-a007-b6a727d03ac6"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Review: This product is amazing! I love it.\n",
+            "Review: The product was good, but the packaging was damaged.\n",
+            "Review: Very disappointing experience. Would not recommend.\n",
+            "Review: Neutral feedback on the product.\n",
+            "Sentiment: Neutral\n",
+            "\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package vader_lexicon to /root/nltk_data...\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install NLTK (if not already installed)\n",
+        "!pip install nltk\n",
+        "# Import necessary libraries\n",
+        "import nltk\n",
+        "nltk.download('punkt')\n",
+        "nltk.download('averaged_perceptron_tagger')\n",
+        "# Sample text for POS tagging\n",
+        "text = \"Parts of speech tagging helps to understand the function of each word in a sentence.\"\n",
+        "# Tokenize the text into words\n",
+        "tokens = nltk.word_tokenize(text)\n",
+        "# Perform POS tagging\n",
+        "pos_tags = nltk.pos_tag(tokens)\n",
+        "# Display the POS tags\n",
+        "print(\"POS tags:\", pos_tags)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "34nNV94ZrciG",
+        "outputId": "7fae968a-9445-47a8-f2b3-a9b5963784d4"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: nltk in /usr/local/lib/python3.10/dist-packages (3.8.1)\n",
+            "Requirement already satisfied: click in /usr/local/lib/python3.10/dist-packages (from nltk) (8.1.7)\n",
+            "Requirement already satisfied: joblib in /usr/local/lib/python3.10/dist-packages (from nltk) (1.3.2)\n",
+            "Requirement already satisfied: regex>=2021.8.3 in /usr/local/lib/python3.10/dist-packages (from nltk) (2023.12.25)\n",
+            "Requirement already satisfied: tqdm in /usr/local/lib/python3.10/dist-packages (from nltk) (4.66.2)\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package punkt to /root/nltk_data...\n",
+            "[nltk_data]   Package punkt is already up-to-date!\n",
+            "[nltk_data] Downloading package averaged_perceptron_tagger to\n",
+            "[nltk_data]     /root/nltk_data...\n",
+            "[nltk_data]   Unzipping taggers/averaged_perceptron_tagger.zip.\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "POS tags: [('Parts', 'NNS'), ('of', 'IN'), ('speech', 'NN'), ('tagging', 'VBG'), ('helps', 'NNS'), ('to', 'TO'), ('understand', 'VB'), ('the', 'DT'), ('function', 'NN'), ('of', 'IN'), ('each', 'DT'), ('word', 'NN'), ('in', 'IN'), ('a', 'DT'), ('sentence', 'NN'), ('.', '.')]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import nltk\n",
+        "from nltk.tokenize import word_tokenize, sent_tokenize\n",
+        "# Download NLTK resources (if not already downloaded)\n",
+        "nltk.download('punkt')\n",
+        "nltk.download('averaged_perceptron_tagger')\n",
+        "def pos_tagging(text):\n",
+        "  sentences = sent_tokenize(text)\n",
+        "tagged_tokens = []\n",
+        "for sentence in sentences:\n",
+        "  tokens = word_tokenize(sentence)\n",
+        "tagged_tokens.extend(nltk.pos_tag(tokens))\n",
+        "return tagged_tokens\n",
+        "def main():\n",
+        "  article_text = \"\"\"\n",
+        "Manchester United secured a 3-1 victory over Chelsea in yesterday's\n",
+        "match.\n",
+        "Goals from Rashford, Greenwood, and Fernandes sealed the win for\n",
+        "United.\n",
+        "Chelsea's only goal came from Pulisic in the first half.\n",
+        "The victory boosts United's chances in the Premier League title\n",
+        "race.\n",
+        "\"\"\"\n",
+        "tagged_tokens = pos_tagging(article_text)\n",
+        "print(\"Original Article Text:\\n\", article_text)\n",
+        "print(\"\\nParts of Speech Tagging:\")\n",
+        "for token, pos_tag in tagged_tokens:\n",
+        "  print(f\"{token}: {pos_tag}\")\n",
+        "if __name__ == \"__main__\":\n",
+        "  main()\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 315
+        },
+        "id": "wmWQOx5WrdlV",
+        "outputId": "b389126e-1281-4a92-e23b-335150b392d4"
+      },
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package punkt to /root/nltk_data...\n",
+            "[nltk_data]   Package punkt is already up-to-date!\n",
+            "[nltk_data] Downloading package averaged_perceptron_tagger to\n",
+            "[nltk_data]     /root/nltk_data...\n",
+            "[nltk_data]   Package averaged_perceptron_tagger is already up-to-\n",
+            "[nltk_data]       date!\n"
+          ]
+        },
+        {
+          "output_type": "error",
+          "ename": "NameError",
+          "evalue": "name 'sentences' is not defined",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-12-5e1a94638b90>\u001b[0m in \u001b[0;36m<cell line: 9>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      7\u001b[0m   \u001b[0msentences\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0msent_tokenize\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtext\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      8\u001b[0m \u001b[0mtagged_tokens\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 9\u001b[0;31m \u001b[0;32mfor\u001b[0m \u001b[0msentence\u001b[0m \u001b[0;32min\u001b[0m \u001b[0msentences\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     10\u001b[0m   \u001b[0mtokens\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mword_tokenize\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msentence\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     11\u001b[0m \u001b[0mtagged_tokens\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mextend\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnltk\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mpos_tag\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtokens\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mNameError\u001b[0m: name 'sentences' is not defined"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install nltk\n",
+        "import nltk\n",
+        "from nltk import RegexpParser\n",
+        "from nltk.tokenize import word_tokenize\n",
+        "from nltk.tag import pos_tag\n",
+        "# Download NLTK resources (run only once if not downloaded)\n",
+        "nltk.download('punkt')\n",
+        "nltk.download('averaged_perceptron_tagger')\n",
+        "# Sample sentence\n",
+        "sentence = \"The quick brown fox jumps over the lazy dog\"\n",
+        "# Tokenize the sentence\n",
+        "tokens = word_tokenize(sentence)\n",
+        "# POS tagging\n",
+        "tagged = pos_tag(tokens)\n",
+        "# Define a chunk grammar using regular expressions\n",
+        "# NP (noun phrase) chunking: \"NP: {<DT>?<JJ>*<NN>}\"\n",
+        "# This grammar captures optional determiner (DT), adjectives (JJ), and nouns (NN) as a noun\n",
+        "phrase\n",
+        "chunk_grammar = r\"\"\"\n",
+        " NP: {<DT>?<JJ>*<NN>}\n",
+        "\"\"\"\n",
+        "# Create a chunk parser with the defined grammar\n",
+        "chunk_parser = RegexpParser(chunk_grammar)\n",
+        "# Parse the tagged sentence to extract chunks\n",
+        "chunks = chunk_parser.parse(tagged)\n",
+        "# Display the chunks\n",
+        "for subtree in chunks.subtrees():\n",
+        " if subtree.label() == 'NP':\n",
+        "   print(subtree)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 402
+        },
+        "id": "0R4O7wEbrhKO",
+        "outputId": "20ad18b5-ced5-4f37-8fe0-68b123c449ae"
+      },
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: nltk in /usr/local/lib/python3.10/dist-packages (3.8.1)\n",
+            "Requirement already satisfied: click in /usr/local/lib/python3.10/dist-packages (from nltk) (8.1.7)\n",
+            "Requirement already satisfied: joblib in /usr/local/lib/python3.10/dist-packages (from nltk) (1.3.2)\n",
+            "Requirement already satisfied: regex>=2021.8.3 in /usr/local/lib/python3.10/dist-packages (from nltk) (2023.12.25)\n",
+            "Requirement already satisfied: tqdm in /usr/local/lib/python3.10/dist-packages (from nltk) (4.66.2)\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package punkt to /root/nltk_data...\n",
+            "[nltk_data]   Package punkt is already up-to-date!\n",
+            "[nltk_data] Downloading package averaged_perceptron_tagger to\n",
+            "[nltk_data]     /root/nltk_data...\n",
+            "[nltk_data]   Package averaged_perceptron_tagger is already up-to-\n",
+            "[nltk_data]       date!\n"
+          ]
+        },
+        {
+          "output_type": "error",
+          "ename": "NameError",
+          "evalue": "name 'phrase' is not defined",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-15-c54d5deef08c>\u001b[0m in \u001b[0;36m<cell line: 18>\u001b[0;34m()\u001b[0m\n\u001b[1;32m     16\u001b[0m \u001b[0;31m# NP (noun phrase) chunking: \"NP: {<DT>?<JJ>*<NN>}\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     17\u001b[0m \u001b[0;31m# This grammar captures optional determiner (DT), adjectives (JJ), and nouns (NN) as a noun\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 18\u001b[0;31m \u001b[0mphrase\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     19\u001b[0m chunk_grammar = r\"\"\"\n\u001b[1;32m     20\u001b[0m  \u001b[0mNP\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0;34m{\u001b[0m\u001b[0;34m<\u001b[0m\u001b[0mDT\u001b[0m\u001b[0;34m>\u001b[0m\u001b[0;31m?\u001b[0m\u001b[0;34m<\u001b[0m\u001b[0mJJ\u001b[0m\u001b[0;34m>\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0;34m<\u001b[0m\u001b[0mNN\u001b[0m\u001b[0;34m>\u001b[0m\u001b[0;34m}\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mNameError\u001b[0m: name 'phrase' is not defined"
+          ]
+        }
+      ]
+    }
+  ]
+}
